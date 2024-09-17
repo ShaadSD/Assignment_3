@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #008CBA;
+        color: white;
+    }
+    
+    .card {
+        border-style: solid;
+        border-color: black;
+        border-width: 1mm;
+        margin-bottom: 1rem;
+    }
+    .card-body {
+        padding: 1rem;
+        background-color: #6495ED;
+    }
+    .card-text {
+        font-weight: bold;
+        font-size: 20px;
+        text-align: center;
+    }
+    .card-id {
+        font-size: 30px;
+        text-align: center;
+    }
+    .card-link {
+        border-style: solid;
+        padding: 5px 10px;
+        margin-right: 5px;
+        border-color: black;
+        text-align: center;
+        display: inline-block;
+        text-decoration: none;
+        color: black;
+    }
+    .edit-button {
+        background-color: yellow; 
+        border-color: black;
+    }
+    .delete-button {
+        background-color: green;
+        border-color: black;
+        color: white;
+    }
+    .card-link:hover {
+        opacity: 0.8; 
+    } 
+    .button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+    .container {
+        padding-top: 70px;
+        padding-right: 100px;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        {% for item in data %}
+        <div class="col-sm-4 mb-4">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-id">{{ item.id }}</h5>
+                    <h6 class="card-text">{{ item.task_assign_date }}</h6>
+                    <p class="card-text">{{ item.taskDescription }}</p>
+                    <p class="card-text">
+                        {% for category in item.taskmodel.all %}
+                            {{ category.category_name }}
+                        {% endfor %}
+                    </p>
+                    {% if item.is_completed %}
+                        <h6 class="card-text">Completed</h6>
+                    {% else %}
+                    <div class="button-container">
+                        <a href="{% url 'edit_model' item.id %}" class="card-link edit-button">Edit</a> 
+                        <a href="{% url 'delete_model' item.id %}" class="card-link delete-button">Delete</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
